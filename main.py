@@ -13,6 +13,8 @@ from sklearn.decomposition import PCA
 
 st.title("Classifiers")
 
+st.divider()
+
 st.sidebar.write("## Explore different classifiers")
 dataset_name = st.sidebar.selectbox("Select Dataset", ("Iris", "Breast Cancer", "Wine dataset"))
 
@@ -68,11 +70,15 @@ classifier_model.fit(X_train, y_train)
 y_pred = classifier_model.predict(X_test)
 
 accuracy = accuracy_score(y_test, y_pred)
-st.write(f"## Classifier - {classifier_name}")
-st.write(f"<p style='color:green; font-weight:bold;'>Accuracy = {accuracy}</p>", unsafe_allow_html=True)
-st.write("Shape of dataset: ", X.shape)
-st.write("Number of classes", len(np.unique(y)))
 
+
+st.write(f"## Classifier - {classifier_name}")
+col1, col2 = st.columns(2)
+col1.metric("Accuracy", accuracy)
+col2.metric("Number of classes", len(np.unique(y)))
+st.write("Shape of dataset: ", X.shape)
+
+st.divider()
 
 if classifier_name == "KNN":
 	knn_explanation =  st.button("What is KNN?")
@@ -147,14 +153,14 @@ if classifier_name == "Random Forest":
 			st.write("""
 			""")
 
-pca_explanation = st.button("What is PCA?")
+pca_explanation = st.sidebar.button("What is PCA?")
 
 if pca_explanation:
     pca_text = "<b>Principal Component Analysis (PCA)</b> is a technique used to simplify complex datasets by reducing their dimensionality while retaining important information. It transforms the original features into a new set of orthogonal components called principal components, ordered by their variance. PCA helps in visualizing high-dimensional data and speeding up machine learning algorithms by removing redundant or noisy features."
-    st.write(pca_text, unsafe_allow_html=True)
+    st.sidebar.write(pca_text, unsafe_allow_html=True)
     image_path = "./images/PCA.png"
     if os.path.exists(image_path):
-         st.image(image_path, caption="PCA ( Principal Component Analysis)", use_column_width=True)
+         st.sidebar.image(image_path, caption="PCA ( Principal Component Analysis)", use_column_width=True)
 
 #PLOT
 pca = PCA(2)
@@ -171,6 +177,7 @@ def plot_data(X_projected, y):
     plt.colorbar()
     return plt.gcf()
 
+st.divider()
 
 fig = plot_data(X_projected, y)
 plt.show()
