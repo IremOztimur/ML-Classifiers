@@ -16,7 +16,7 @@ st.title("Classifiers")
 st.divider()
 
 st.sidebar.write("## Explore different classifiers")
-dataset_name = st.sidebar.selectbox("Select Dataset", ("Iris", "Breast Cancer", "Wine dataset"))
+dataset_name = st.sidebar.selectbox("Select Dataset", ("Iris", "Breast Cancer", "Wine dataset", "Digits"))
 
 classifier_name = st.sidebar.selectbox("Select Classifier", ("KNN", "SVM", "Random Forest"))
 
@@ -27,6 +27,8 @@ def get_dataset(dataset_name):
         data = datasets.load_breast_cancer()
     elif dataset_name == "Wine dataset":
         data = datasets.load_wine()
+    elif dataset_name == "Digits":
+          data = datasets.load_digits()
     X = data.data
     y = data.target
     return X, y
@@ -86,6 +88,8 @@ if classifier_name == "KNN":
 		image_path = "./images/KNN.png"
 		if os.path.exists(image_path):
 			st.write("""
+	### K-Nearest Neighbors Algorithm
+
 	### Training
 	KNN stores all available data points and their corresponding class labels (for classification) or values (for regression).
 
@@ -109,6 +113,8 @@ if classifier_name == "SVM":
 		image_path = "./images/SVM.png"
 		if os.path.exists(image_path):
 			st.write("""
+### Support Vector Machine Algorithm
+
 ### Training
 Support Vector Machine (SVM) learns to identify the optimal hyperplane that best separates data points of different classes in the training set. This hyperplane is chosen to maximize the margin, the distance between the hyperplane and the nearest data points of each class, known as support vectors.
 
@@ -151,8 +157,26 @@ if classifier_name == "Random Forest":
 		image_path = "./images/Random-Forest.png"
 		if os.path.exists(image_path):
 			st.write("""
-			""")
+### Random Forest Algorithm
 
+### Training
+Random Forest constructs multiple decision trees during training. Each tree is trained on a random subset of the training data and a random subset of the features. This randomness helps in reducing overfitting and improving generalization.
+
+### Prediction
+When predicting the class (classification) or value (regression) of a new data point, Random Forest aggregates the predictions of all the individual trees in the forest. For classification, it uses a voting mechanism to determine the final class, while for regression, it calculates the mean prediction of all trees.
+
+### Parameters
+- **n_estimators**: The number of trees in the forest. A higher number of trees typically leads to better performance, but it also increases computational complexity.
+- **max_depth**: The maximum depth of each decision tree in the forest. Increasing max_depth allows the trees to learn more complex patterns in the data, but it may also lead to overfitting if set too high.
+
+### Classification
+In classification tasks, Random Forest assigns the class label that is most frequently predicted by the individual trees in the forest. This ensemble approach often results in improved accuracy and robustness compared to single decision trees.
+""")
+			st.image(image_path, caption='Random Forest Classifier', use_column_width=True)
+		else:
+			st.write("Image not found. Please provide the correct image path.")
+
+st.sidebar.divider()
 pca_explanation = st.sidebar.button("What is PCA?")
 
 if pca_explanation:
