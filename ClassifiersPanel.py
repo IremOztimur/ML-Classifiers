@@ -4,7 +4,7 @@ import os
 
 def PanelSetup(X, y, classifier_name, classifier_model, params, dataset_name):
 	if classifier_name == "KNN":
-		Visualization.visualize(X[:, :2],y, classifier_model, params, dataset_name)
+		Visualization.visualize(X[:, :2],y, classifier_model, params, dataset_name, classifier_name)
 		st.divider()
 		knn_explanation =  st.button("What is KNN?")
 		if knn_explanation:

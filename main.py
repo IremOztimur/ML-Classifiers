@@ -44,15 +44,17 @@ def add_parameter_ui(clf_name):
     if (clf_name == "KNN"):
         K = st.sidebar.slider("K", 1, 15)
         params["K"] = K
-        params["iris_dataset"] = datasets.load_iris()
+        params[dataset_name] = datasets.load_iris()
     elif (clf_name == "SVM"):
         C = st.sidebar.slider("C", 0.01, 10.0)
         params["C"] = C
+        params[dataset_name] = datasets.load_iris()
     elif (clf_name == "Random Forest"):
         n_estimators = st.sidebar.slider("n_estimators", 1, 100)
         max_depth = st.sidebar.slider("max_depth", 2, 15)
         params["max_depth"] = max_depth
         params["n_estimators"] = n_estimators
+        params[dataset_name] = datasets.load_iris()
     return params
 
 params = add_parameter_ui(classifier_name)

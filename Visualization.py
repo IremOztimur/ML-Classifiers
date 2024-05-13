@@ -11,7 +11,7 @@ import numpy as np
 cmap_light = ListedColormap(["orange", "cyan", "cornflowerblue"])
 cmap_bold = ["darkorange", "c", "darkblue"]
 
-def plot_knn_decision_boundary(params, X, y, classifier_model):
+def plot_knn_decision_boundary(params, X, y, classifier_model, dataset_name):
     fig, ax = plt.subplots()
     DecisionBoundaryDisplay.from_estimator(
         classifier_model,
@@ -20,15 +20,15 @@ def plot_knn_decision_boundary(params, X, y, classifier_model):
         ax=ax,
         response_method="predict",
         plot_method="pcolormesh",
-        xlabel=params['iris_dataset'].feature_names[0],
-        ylabel=params['iris_dataset'].feature_names[1],
+        xlabel=params[dataset_name].feature_names[0],
+        ylabel=params[dataset_name].feature_names[1],
         shading="auto",
     )
     # Plot training points
     sns.scatterplot(
         x=X[:, 0],
         y=X[:, 1],
-        hue=params['iris_dataset'].target_names[y],
+        hue=params[dataset_name].target_names[y],
         palette=cmap_bold,
         alpha=1.0,
         edgecolor="black",
@@ -39,7 +39,7 @@ def plot_knn_decision_boundary(params, X, y, classifier_model):
 
 
 
-def visualize(X, y, classifier_model, params, dataset_name):
+def visualize(X, y, classifier_model, params, dataset_name, classifier_name):
 	if (dataset_name == 'Digits'):
 		st.write("Not available for Digits dataset")
 		return
@@ -48,13 +48,20 @@ def visualize(X, y, classifier_model, params, dataset_name):
 	y_pred = classifier_model.predict(X_test)
 	accuracy = accuracy_score(y_test, y_pred)
 
-	st.write("## K-NN with {} Features".format(X.shape[1]))
+	if classifier_name == "KNN":
+		st.write("## K-NN with {} Features".format(X.shape[1]))
+	elif classifier_name == "SVM":
+		st.write("## SVM with {} Features".format(X.shape[1]))
+
 	col1, col2 = st.columns(2)
 	col1.metric("Accuracy", accuracy)
 	col2.metric("Number of classes", len(np.unique(y)))
 	st.write("Shape of dataset: ", X.shape)
 
-	plot_knn_decision_boundary(params, X, y, classifier_model)
+	if classifier_name == "KNN":
+		plot_knn_decision_boundary(params, X, y, classifier_model, dataset_name)
+	elif classifier_name == "SVM":
+		pass
 
 
 def plot_data(X_projected, y):
